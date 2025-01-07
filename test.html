@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Countdown Timer</title>
+    <style>
+      /* General Styling */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      #box {
+        display: block;
+        position: relative;
+        width: 300px;
+        height: 250px;
+        margin: 20px auto;
+        border: 1px solid #ccc;
+        overflow: hidden; /* Ensure content stays inside the box */
+      }
+
+      /* Countdown Timer */
+      .countdown {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        text-align: center;
+        font-size: 14px;
+        color: rgb(135, 22, 56);
+        position: absolute;
+        bottom: 15px; /* Position the timer within the box */
+        width: 100%;
+      }
+
+      .countdown li {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .countdown span {
+        display: block;
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      .countdown p {
+        position: absolute;
+        bottom: -10px;
+        right: -20px;
+        font-size: 12px;
+        margin: 0;
+      }
+
+      /* Swapping Content Styling */
+      .swappable-area {
+        position: absolute;
+        bottom: 40px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        z-index: 1;
+      }
+
+      .swappable-content {
+        font-size: 11px;
+        font-weight: bold;
+        /* add styling to smothen the text */
+        animation: fade 7s infinite;
+        margin-bottom: 7px;
+        padding: 1px;
+      }
+
+      @keyframes fade {
+        0% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .button {
+        padding: 10px 20px;
+        margin-bottom: 4px;
+        /* color: rgb(135, 22, 56); */
+        background-color: rgb(135, 22, 56);
+        color: white;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        /* Add breathing animation to the button */
+        animation: breathe 5s infinite;
+      }
+      /* Make the button size increase and decrease as if it was a heart beat */
+      @keyframes breathe {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="box">
+      <!-- Swappable Content -->
+      <div class="swappable-area">
+        <div id="text" class="swappable-content">
+          AWARDS UP TO
+          <span
+            style="color: rgb(135, 22, 56); font-size: 11px; font-weight: bold"
+            >$100,000</span
+          >
+          IN EACH SUB-CATEGORY FOR SINGLE TRANSLATIONS AND ACHIEVEMENT
+        </div>
+        <button id="swap-button" class="swappable-content hidden button">
+          Apply Now
+        </button>
+      </div>
+
+      <!-- Advertisement Image -->
+      <div id="ad_display">
+        <div id="page1" class="fullpage">
+          <div id="Image---1" style="position: absolute; top: 0; left: 0">
+            <img
+              style="width: 100%; height: 100%"
+              src="https://i.imgur.com/QWVf7VN.jpeg"
+              alt="Ad"
+            />
+          </div>
+
+          <!-- Countdown Timer -->
+          <div id="CountDown---2">
+            <ul class="countdown">
+              <li>
+                <span class="days">0</span>
+                <p>Days</p>
+              </li>
+              <li>
+                <span class="hours">0</span>
+                <p>Hrs</p>
+              </li>
+              <li>
+                <span class="minutes">0</span>
+                <p>Mins</p>
+              </li>
+              <li>
+                <span class="seconds">0</span>
+                <p>Secs</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+      function startCountdown(endTime) {
+        const interval = setInterval(() => {
+          const now = new Date().getTime();
+          const timeLeft = endTime - now;
+
+          if (timeLeft <= 0) {
+            clearInterval(interval);
+            document.querySelector(".countdown").innerHTML = "Expired";
+          } else {
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor(
+              (timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+            );
+            const minutes = Math.floor(
+              (timeLeft % (1000 * 60 * 60)) / (1000 * 60)
+            );
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            document.querySelector(".days").textContent = days;
+            document.querySelector(".hours").textContent = hours;
+            document.querySelector(".minutes").textContent = minutes;
+            document.querySelector(".seconds").textContent = seconds;
+          }
+        }, 1000);
+      }
+
+      function toggleSwappableContent() {
+        const text = document.getElementById("text");
+        const button = document.getElementById("swap-button");
+
+        setInterval(() => {
+          if (text.classList.contains("hidden")) {
+            text.classList.remove("hidden");
+            button.classList.add("hidden");
+          } else {
+            text.classList.add("hidden");
+            button.classList.remove("hidden");
+          }
+        }, 7000); // Swaps every 7 seconds
+      }
+
+      // Initialize Countdown and Swappable Content
+      const endTime = new Date("2025-03-31T23:59:59").getTime();
+      startCountdown(endTime);
+      toggleSwappableContent();
+    </script>
+  </body>
+</html>
